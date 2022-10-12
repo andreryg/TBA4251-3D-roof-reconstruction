@@ -4,6 +4,7 @@ import laspy
 import open3d as o3d
 
 from alpha import alpha_shape
+from best_fit_plane import best_fit_plane
 from convertion import convert_to_ndarray
 #from liblas import file
 
@@ -19,9 +20,10 @@ print(list(las.point_format.dimension_names))
 #print(las7.point_source_id)
 #print(las8.point_source_id)
 #print(las3.point_source_id)
-print(convert_to_ndarray(las))
+alpha_shape(las6, 2)
 
 
+"""
 point_data = np.stack([las.x, las.y, las.z], axis=0).transpose((1,0))
 point_data2 = np.stack([las2.x, las2.y, las2.z], axis=0).transpose((1,0))
 point_data3 = np.stack([las3.x, las3.y, las3.z], axis=0).transpose((1,0))
@@ -35,3 +37,4 @@ point_data = np.concatenate((point_data5, point_data6, point_data7, point_data8)
 geom = o3d.geometry.PointCloud()
 geom.points = o3d.utility.Vector3dVector(point_data)
 o3d.visualization.draw_geometries([geom])
+"""
