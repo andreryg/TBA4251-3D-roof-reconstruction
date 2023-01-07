@@ -1,18 +1,20 @@
 import math
-import numpy as np
 
-def rotate(points):
+def rotatePoints(points, center, deg=1):
     """
-    Rotates a set of points on any 3d plane to the xy plane.
+    https://gist.github.com/somada141/d81a05f172bb2df26a2c
+    Rotates a list of points around a center deg degrees.  
+    :param points: 2d list of points.
+    :param center: 2d point.
+    :param deg: integer.
+    :return: list of 2d points
     """
-    
-    
-    angle = 0
 
-    def rot_matrix(axis, angle):
-        if axis == "x":
-            return np.matrix([[1, 0, 0], [0, math.cos(angle), -math.sin(angle)], [0, math.sin(angle), math.cos(angle)]])
-        elif axis == "y":
-            return  np.matrix([[math.cos(angle), 0, math.sin(angle)], [0, 1, 0], [-math.sin(angle), 0, math.cos(angle)]])
-        elif axis == "z":
-            return np.matrix([[math.cos(angle), -math.sin(angle), 0], [math.sin(angle), math.cos(angle), 0], [0, 0, 1]])
+    angle = math.radians(deg)
+    rotatedPoints = []
+    for point in points:
+        temp_point = point[0]-center[0], point[1]-center[1]
+        temp_point = (temp_point[0]*math.cos(angle) - temp_point[1]*math.sin(angle), temp_point[0]*math.sin(angle) + temp_point[1]*math.cos(angle))
+        temp_point = temp_point[0]+center[0], temp_point[1]+center[1]
+        rotatePoints.append(temp_point)
+    return rotatePoints

@@ -10,7 +10,7 @@ Basic steps:
 
 import numpy as np
 import laspy
-from alpha import alpha_shape
+from convex_hull import convex_hull
 from best_fit_plane import best_fit_plane
 from centroid import centroid
 from distance import distance, distribution
@@ -18,10 +18,10 @@ from convertion import convert_to_ndarray
 import matplotlib.pyplot as plt
 import pandas as pd
 
-pointcloud = laspy.read("../sub roof data 1/10456495/10456495_1_3_2.las")
+pointcloud = laspy.read("../sub roof data 1/10477867/10477867_2_7_2.las")
 points = pd.DataFrame(pointcloud.xyz, columns=['x', 'y', 'z'])
 fit = (best_fit_plane(points))
-alpha = alpha_shape(points, 0.2)
+alpha = convex_hull(points)
 
 plt.figure()
 ax = plt.axes(projection='3d')

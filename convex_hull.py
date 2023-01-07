@@ -1,36 +1,63 @@
 #Implementation of alpha shape
 
 import numpy as np
-from scipy.spatial import Delaunay
+from scipy.spatial import ConvexHull, convex_hull_plot_2d
 from best_fit_plane import best_fit_plane
 import matplotlib.pyplot as plt
 import alphashape
 from descartes import PolygonPatch
 import math
+from shapesimilarity import shape_similarity
+from ransac_line import ransac_line
 
 from convertion import convert_to_2darray, convert_to_ndarray
 
-def alpha_shape(points, alpha):
+def convex_hull(points):
     """
-    Converts a Dataframe of points to alpha shape. For simplicity all points are treadet as 2d points. 
+    Converts a Dataframe of points to convex hull. For simplicity all points are treadet as 2d points. 
     :param points: pandas dataframe with x and y column.
     :param alpha: alpha parameter between 0 and 1 used to create tighter fitting shape.
     :return: list of points in alpha shape
     """
     
-    points_flat = tuple(zip(points.x, points.y))
-    alpha_shape = alphashape.alphashape(points_flat, alpha)
+    points_flat = list(zip(points.x, points.y))
+    hull = ConvexHull(points_flat)
 
-    return alpha_shape
+    fig, ax = plt.subplots()
+    ax.scatter(*zip(*points_flat))
+    convex_hull_plot_2d(hull, ax=ax)
+    plt.show()
+    hull_points = hull.points
+    hull_area = hull.area
+    return hull_points, hull_area
+    """
+    plt.scatter(x,y)
+    #ax.add_patch(PolygonPatch(alpha_shape, alpha=0.2))
+    plt.show()
+
+    xi = [0, 1, 0.5, 0]
+    yi = [0, 0, 1, 0]
+    plt.plot(xi,yi)
+    plt.show()
+
+    shape1 = np.column_stack((x,y))
+    shape2 = np.column_stack((xi,yi))
+    similarity = shape_similarity(shape1, shape2)
+    print(similarity)
+    """
+
+    #return alpha_shape
+    """
     heights = []
     for i in points:
         heights.append(i[2])
     print(sorted(heights))
     
+    print(alpha_shape)
     fig, ax = plt.subplots()
     ax.scatter(*zip(*points_flat))
     ax.add_patch(PolygonPatch(alpha_shape, alpha=0.4))
-    
+    plt.show()
 
     def angle_between_vec(vec1, vec2):
         return np.rad2deg(np.arccos(np.clip(np.inner(vec1, vec2)/(np.linalg.norm(vec1)*np.linalg.norm(vec2)), -1.0, 1.0)))
@@ -40,6 +67,9 @@ def alpha_shape(points, alpha):
     y_avg = sum(y)/len(y)
     ax.scatter(x_avg,y_avg,color="b")
     plt.show()
+    print(x)
+    print(y)
+    return alpha_shape
     
     tot_angle = 0
     for i in range(0,len(x)-2):
@@ -47,7 +77,7 @@ def alpha_shape(points, alpha):
         print(tot_angle)
     print(tot_angle)
 
-    """
+    
     a = points[10]
     b = points[11]
     c = points[21]
@@ -55,7 +85,7 @@ def alpha_shape(points, alpha):
     ac = c-a
     cross = np.cross(ab,ac)
     print(cross)
-    """
+    
     fit = best_fit_plane(points)
     plt.figure()
     ax = plt.axes(projection='3d')
@@ -72,6 +102,7 @@ def alpha_shape(points, alpha):
     ax.plot_wireframe(X,Y,Z, color='k')
 
     plt.show()
+    """
     
     
 

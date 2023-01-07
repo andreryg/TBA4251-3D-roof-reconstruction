@@ -1,5 +1,16 @@
 import numpy as np
 import math
+import shapely
+
+def distancePointToShape(points, shape):
+    """
+    Finds the average distance between all the points in a list and a shape to determine similarity. 
+    """
+    poly = shapely.Polygon(shape)
+    total_distance = 0
+    for i in points:
+        total_distance += poly.boundary.distance(shapely.Point(i))
+    return total_distance
 
 def distance(center, points):
     """
