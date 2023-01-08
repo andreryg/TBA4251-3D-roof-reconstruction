@@ -10,18 +10,21 @@ Basic steps:
 
 import numpy as np
 import laspy
-from convex_hull import convex_hull
+from alpha_shape import alphaShape
 from best_fit_plane import best_fit_plane
 from centroid import centroid
 from distance import distance, distribution
 from convertion import convert_to_ndarray
 import matplotlib.pyplot as plt
 import pandas as pd
+from shapeFitting import fit_to_shape
 
-pointcloud = laspy.read("../sub roof data 1/10477867/10477867_2_7_2.las")
+pointcloud = laspy.read("../sub roof data 1/10477867/10477867_2_7_2.las") #rectangle
+#pointcloud = laspy.read("../sub roof data 1/10456495/10456495_1_3_2.las") #triangle
 points = pd.DataFrame(pointcloud.xyz, columns=['x', 'y', 'z'])
 fit = (best_fit_plane(points))
-alpha = convex_hull(points)
+alpha_points, area, center = alphaShape(points)
+fit_to_shape(alpha_points, area, center)
 
 plt.figure()
 ax = plt.axes(projection='3d')

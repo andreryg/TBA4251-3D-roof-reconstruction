@@ -10,7 +10,7 @@ def distancePointToShape(points, shape):
     total_distance = 0
     for i in points:
         total_distance += poly.boundary.distance(shapely.Point(i))
-    return total_distance
+    return total_distance/len(points)
 
 def distance(center, points):
     """

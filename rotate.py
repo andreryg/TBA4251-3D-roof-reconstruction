@@ -16,5 +16,5 @@ def rotatePoints(points, center, deg=1):
         temp_point = point[0]-center[0], point[1]-center[1]
         temp_point = (temp_point[0]*math.cos(angle) - temp_point[1]*math.sin(angle), temp_point[0]*math.sin(angle) + temp_point[1]*math.cos(angle))
         temp_point = temp_point[0]+center[0], temp_point[1]+center[1]
-        rotatePoints.append(temp_point)
-    return rotatePoints
+        rotatedPoints.append(temp_point)
+    return rotatedPoints
