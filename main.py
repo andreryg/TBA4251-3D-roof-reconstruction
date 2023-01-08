@@ -19,8 +19,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from shapeFitting import fit_to_shape
 
-pointcloud = laspy.read("../sub roof data 1/10477867/10477867_2_7_2.las") #rectangle
+#pointcloud = laspy.read("../sub roof data 1/10477867/10477867_2_7_1.las") #rectangle
 #pointcloud = laspy.read("../sub roof data 1/10456495/10456495_1_3_2.las") #triangle
+#pointcloud = laspy.read("../sub roof data 1/10527457/10527457_2_7_4.las") #Trapezium
+pointcloud = laspy.read("../sub roof data 1/182452858/182452858_1_6_3.las") #Parallelogram
 points = pd.DataFrame(pointcloud.xyz, columns=['x', 'y', 'z'])
 fit = (best_fit_plane(points))
 alpha_points, area, center = alphaShape(points)

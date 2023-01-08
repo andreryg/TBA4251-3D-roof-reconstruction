@@ -44,9 +44,9 @@ def triangle(center, g, h):
     point3 = [center[0], center[1]+h/2]
     return [point1, point2, point3]
 
-def trapezoid(center, a, b, h):
+def iso_trapezium(center, a, b, h):
     """
-    Define a trapezoid based on its geographical center and height and bases a and b. Returns a list of all the corner points. 
+    Define a isometric trapezium based on its geographical center and height and bases a and b. Returns a list of all the corner points. 
     :param center: 2d coordinate.
     :param a: float
     :param b: float
@@ -58,4 +58,36 @@ def trapezoid(center, a, b, h):
     point2 = [center[0]+b/2, center[1]-h/2]
     point3 = [center[0]+a/2, center[1]+h/2]
     point4 = [center[0]-a/2, center[1]+h/2]
+    return [point1, point2, point3, point4]
+
+def parallelogram(center, g, h, offset):
+    """
+    Define a isometric trapezium based on its geographical center and height and bases a and b. Returns a list of all the corner points. 
+    :param center: 2d coordinate.
+    :param g: float
+    :param h: float
+    :param offset: float
+    :return: list of 2d points.
+    """
+
+    point1 = [center[0]-g/2-offset, center[1]-h/2]
+    point2 = [center[0]+g/2-offset, center[1]-h/2]
+    point3 = [center[0]+g/2+offset, center[1]+h/2]
+    point4 = [center[0]-g/2+offset, center[1]+h/2]
+    return [point1, point2, point3, point4]
+
+def trapezium(center, w, h, offset):
+    """
+    Define a isometric trapezium based on its geographical center and height and bases a and b. Returns a list of all the corner points. 
+    :param center: 2d coordinate.
+    :param w: float
+    :param h: float
+    :param offset: float
+    :return: list of 2d points.
+    """
+
+    point1 = [center[0]-w/2, center[1]-(h+abs(offset))/2]
+    point2 = [center[0]+w/2, center[1]-(h+abs(offset))/2]
+    point3 = [center[0]+w/2, center[1]+(h+abs(offset))/2-abs(offset)-offset]
+    point4 = [center[0]-w/2, center[1]+(h+abs(offset))/2-abs(offset)+offset]
     return [point1, point2, point3, point4]
