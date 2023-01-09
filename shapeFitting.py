@@ -3,7 +3,6 @@ from rotate import rotatePoints
 from shapes import rectangle, square, triangle, iso_trapezium, parallelogram, trapezium
 from distance import distancePointToShape
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 
 def fit_to_shape(points, area, center):
     """
@@ -21,7 +20,7 @@ def fit_to_shape(points, area, center):
     y = points[:,1]
     xy_aligned_bounding_box_area = (np.max(x)-np.min(x))*(np.max(y)-np.min(y))
     for i in range(359): #Rotating each roof segment to align to the predefined shapes. 
-        temp_points = np.array(rotatePoints(points, center, i))
+        temp_points = np.array(rotatePoints(orig_points, center, i))
         x = temp_points[:,0]
         y = temp_points[:,1]
         temp_area = (np.max(x)-np.min(x))*(np.max(y)-np.min(y))
@@ -36,18 +35,6 @@ def fit_to_shape(points, area, center):
     y = points[:,1]
     center = [(np.max(x)+np.min(x))/2, (np.max(y)+np.min(y))/2]
 
-    """
-    to do list:
-    remove rotation of shapes.
-    add the rest of the shapes and parameter change. When changing parameters a new shape is created for every change. 
-    triangles also need to check for mirrored.
-    maybe add parallellogram. 
-    remember correct constraints: only change when a decrease in distance is found. 
-    can maybe remove square and rectangle, trapezoid already covers well. 
-    rotate back after best shape is found. 
-    """
-        
-
     Square = square(center, area)
     distance = 1000
     temp_dist = distancePointToShape(points, Square)
@@ -56,7 +43,7 @@ def fit_to_shape(points, area, center):
         best_fit = Square
     if distance < threshold:
         return rotatePoints(best_fit, old_center, -rotation)
-    print(distance)
+  
     
     #TRIANGLE
     temp_distance = 1000
@@ -99,7 +86,7 @@ def fit_to_shape(points, area, center):
         best_fit = best_tri
     if distance < threshold:
         return rotatePoints(best_fit, old_center, -rotation)
-    print(distance)
+
 
     #RECTANGLE
     temp_distance = 1000
@@ -135,7 +122,7 @@ def fit_to_shape(points, area, center):
         best_fit = best_rect
     if distance < threshold:
         return rotatePoints(best_fit, old_center, -rotation)
-    print(distance)
+ 
 
     #ISOMETRIC TRAPEZIUM
     temp_distance = 1000
@@ -197,13 +184,13 @@ def fit_to_shape(points, area, center):
             b = temp_b
             continue
         break
-    print(temp_distance)
+ 
     if temp_distance < distance:
         distance = temp_distance
         best_fit = best_isotrap
     if distance < threshold:
         return rotatePoints(best_fit, old_center, -rotation)
-    print(distance)
+
 
     #PARALLELOGRAM
     temp_distance
@@ -258,7 +245,7 @@ def fit_to_shape(points, area, center):
         best_fit = best_para
     if distance < threshold:
         return rotatePoints(best_fit, old_center, -rotation)
-    print(distance)
+
 
     #TRAPEZIUM
     temp_distance = 1000
@@ -336,9 +323,9 @@ def fit_to_shape(points, area, center):
     if temp_distance < distance:
         distance = temp_distance
         best_fit = best_trap
-    if distance < threshold:
-        return rotatePoints(best_fit, old_center, -rotation)
-    print(distance)
+    
+    return rotatePoints(best_fit, old_center, -rotation)
+    
 
     plt.scatter(*zip(*best_fit))
     plt.scatter(*zip(*points))

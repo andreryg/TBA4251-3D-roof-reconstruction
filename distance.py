@@ -5,6 +5,9 @@ import shapely
 def distancePointToShape(points, shape):
     """
     Finds the average distance between all the points in a list and a shape to determine similarity. 
+    :param points: list of 2d points
+    :param shape: list of 2d points
+    :return: float
     """
     poly = shapely.Polygon(shape)
     total_distance = 0

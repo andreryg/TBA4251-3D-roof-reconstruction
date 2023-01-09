@@ -2,15 +2,8 @@
 
 import numpy as np
 from scipy.spatial import ConvexHull, convex_hull_plot_2d
-from best_fit_plane import best_fit_plane
 import matplotlib.pyplot as plt
 import alphashape
-from descartes import PolygonPatch
-import math
-from shapesimilarity import shape_similarity
-from ransac_line import ransac_line
-
-from convertion import convert_to_2darray, convert_to_ndarray
 
 def alphaShape(points, alpha=0.2):
     """
@@ -20,6 +13,7 @@ def alphaShape(points, alpha=0.2):
     :return: list of points in alpha shape, area of alpha shape and the pointclouds geographical center
     """
 
+    #print(points)
     points_flat = list(zip(points.x, points.y))
     alpha_shape = alphashape.alphashape(points_flat,alpha)
     xx, yy = alpha_shape.exterior.coords.xy
