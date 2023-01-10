@@ -33,6 +33,7 @@ def fit_to_shape(points, area, center):
     old_center = center.copy()
     x = points[:,0]
     y = points[:,1]
+    
     center = [(np.max(x)+np.min(x))/2, (np.max(y)+np.min(y))/2]
 
     Square = square(center, area)
@@ -124,7 +125,7 @@ def fit_to_shape(points, area, center):
         return rotatePoints(best_fit, old_center, -rotation)
  
 
-    #ISOMETRIC TRAPEZIUM
+    #ISOSCELES TRAPEZIUM
     temp_distance = 1000
     a = b = h = np.sqrt(area)
     Iso_trapezium = iso_trapezium(center, a, b, h)
@@ -133,56 +134,62 @@ def fit_to_shape(points, area, center):
         temp_distance = temp_dist
         best_isotrap = Iso_trapezium
 
+    angles = np.arange(0,360, 10).tolist()
     while(True):
-        temp_height = h + 0.9
-        x = (a+b)/(2*temp_height)
-        temp_a = a-x
-        temp_b = b-x
-        Iso_trapezium = iso_trapezium(center, temp_a, temp_b, temp_height)
-        temp_dist = distancePointToShape(points, Iso_trapezium)
-        if temp_dist < temp_distance:
-            temp_distance = temp_dist
-            best_isotrap = Iso_trapezium
-            h = temp_height
-            a = temp_a
-            b = temp_b
-            continue
+        for i in angles:
+            temp_a = a + 0.5
+            temp_b = b - 0.5
+            Iso_trapezium = iso_trapezium(center, temp_a, temp_b, h)
+            Iso_trapezium = rotatePoints(Iso_trapezium, center, i)
+            temp_dist = distancePointToShape(points, Iso_trapezium)
+            if temp_dist < temp_distance:
+                temp_distance = temp_dist
+                best_isotrap = Iso_trapezium
+                a = temp_a
+                b = temp_b
+                continue
 
-        temp_height = h - 0.9
-        x = (a+b)/(2*temp_height)
-        temp_a = a+x
-        temp_b = b+x
-        Iso_trapezium = iso_trapezium(center, temp_a, temp_b, temp_height)
-        temp_dist = distancePointToShape(points, Iso_trapezium)
-        if temp_dist < temp_distance:
-            temp_distance = temp_dist
-            best_isotrap = Iso_trapezium
-            h = temp_height
-            a = temp_a
-            b = temp_b
-            continue
+            temp_a = a - 0.5
+            temp_b = b + 0.5
+            Iso_trapezium = iso_trapezium(center, temp_a, temp_b, h)
+            Iso_trapezium = rotatePoints(Iso_trapezium, center, i)
+            temp_dist = distancePointToShape(points, Iso_trapezium)
+            if temp_dist < temp_distance:
+                temp_distance = temp_dist
+                best_isotrap = Iso_trapezium
+                a = temp_a
+                b = temp_b
+                continue
+            
+            temp_height = h + 0.9
+            x = (a+b)/(2*temp_height)
+            temp_a = a-x
+            temp_b = b-x
+            Iso_trapezium = iso_trapezium(center, temp_a, temp_b, temp_height)
+            Iso_trapezium = rotatePoints(Iso_trapezium, center, i)
+            temp_dist = distancePointToShape(points, Iso_trapezium)
+            if temp_dist < temp_distance:
+                temp_distance = temp_dist
+                best_isotrap = Iso_trapezium
+                h = temp_height
+                a = temp_a
+                b = temp_b
+                continue
 
-        temp_a = a + 0.5
-        temp_b = b - 0.5
-        Iso_trapezium = iso_trapezium(center, temp_a, temp_b, h)
-        temp_dist = distancePointToShape(points, Iso_trapezium)
-        if temp_dist < temp_distance:
-            temp_distance = temp_dist
-            best_isotrap = Iso_trapezium
-            a = temp_a
-            b = temp_b
-            continue
-
-        temp_a = a - 0.5
-        temp_b = b + 0.5
-        Iso_trapezium = iso_trapezium(center, temp_a, temp_b, h)
-        temp_dist = distancePointToShape(points, Iso_trapezium)
-        if temp_dist < temp_distance:
-            temp_distance = temp_dist
-            best_isotrap = Iso_trapezium
-            a = temp_a
-            b = temp_b
-            continue
+            temp_height = h - 0.9
+            x = (a+b)/(2*temp_height)
+            temp_a = a+x
+            temp_b = b+x
+            Iso_trapezium = iso_trapezium(center, temp_a, temp_b, temp_height)
+            Iso_trapezium = rotatePoints(Iso_trapezium, center, i)
+            temp_dist = distancePointToShape(points, Iso_trapezium)
+            if temp_dist < temp_distance:
+                temp_distance = temp_dist
+                best_isotrap = Iso_trapezium
+                h = temp_height
+                a = temp_a
+                b = temp_b
+                continue
         break
  
     if temp_distance < distance:

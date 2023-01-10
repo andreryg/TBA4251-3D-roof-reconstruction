@@ -46,7 +46,7 @@ def triangle(center, g, h):
 
 def iso_trapezium(center, a, b, h):
     """
-    Define a isometric trapezium based on its geographical center and height and bases a and b. Returns a list of all the corner points. 
+    Define a isosceles trapezium based on its geographical center and height and bases a and b. Returns a list of all the corner points. 
     :param center: 2d coordinate.
     :param a: float
     :param b: float
