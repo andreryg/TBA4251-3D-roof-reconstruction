@@ -14,9 +14,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 #pointcloud = laspy.read("../sub roof data 1/10456495/10456495_1_3_2.las") #triangle
 #pointcloud = laspy.read("../sub roof data 1/10527457/10527457_2_7_4.las") #Trapezium
 #pointcloud = laspy.read("../sub roof data 1/182452858/182452858_1_6_3.las") #Parallelogram
-minX = minY = minZ = 0
-maxX = maxY = maxZ = 1000**3
-roof_paths = folder_iteration()
+roof_paths = folder_iteration() #Generating lists with all the names of the roof segment point cloud files. 
 
 for i in roof_paths:
     shapes = []
@@ -26,12 +24,12 @@ for i in roof_paths:
     pointss = pd.DataFrame(columns=['x','y','z'])
     for j in i:
         try:
-            pointcloud = laspy.read(j)
-            points = pd.DataFrame(pointcloud.xyz, columns=['x', 'y', 'z'])
-            pointss = pd.concat([pointss, points])
-            fit = (best_fit_plane(points))
-            alpha_points, area, center = alphaShape(points)
-            shape = fit_to_shape(alpha_points, area, center)
+            pointcloud = laspy.read(j) #Reading point cloud
+            points = pd.DataFrame(pointcloud.xyz, columns=['x', 'y', 'z']) #Converting points in point cloud to dataframe
+            pointss = pd.concat([pointss, points]) #Combining dataframes with others of the same roof.
+            fit = (best_fit_plane(points)) #Finding the a,b,c values of the best fitted plane to the points.
+            alpha_points, area, center = alphaShape(points) #Finding the alpha shape. 
+            shape = fit_to_shape(alpha_points, area, center) #Finding which shape fits the best to the alpha shape. 
             shape = [list(coord) for coord in shape]
             for i in shape:
                 i.append(float((-fit[0] * i[0] - fit[1] * i[1] - fit[3])/fit[2]))
